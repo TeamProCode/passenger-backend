@@ -6,7 +6,11 @@ class DestinationsController < ApplicationController
 
     def create
         destination = Destination.create(destination_params)
+        if destination.valid?
         render json: destination
+        else
+            render json: destination.errors, status: 422
+        end
     end
     
     def show
@@ -22,7 +26,11 @@ class DestinationsController < ApplicationController
     def update
         destination = Destination.find(params[:id])
         destination.update(destination_params)
-        render json: destination
+        if destination.valid?
+            render json: destination
+        else
+            render json: destination.errors, status: 422
+        end
     end
 
     def destroy
