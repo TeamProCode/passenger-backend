@@ -14,7 +14,8 @@ RSpec.describe 'Destinations', type: :request do
         country: 'Puerto Rico',
         city: 'San Juan',
         climate: 'Tropical',
-        local_language: 'Spanish'
+        local_language: 'Spanish',
+        user_id: user.id
       )
       get '/destinations'
 
