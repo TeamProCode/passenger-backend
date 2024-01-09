@@ -1,4 +1,4 @@
 class Destination < ApplicationRecord
     belongs_to :user
-    validates :country, :city, :climate, :local_language, :user_id, presence: true
+    validates :location, :climate, :local_language, :image, :description, :user_id, presence: true
 end
