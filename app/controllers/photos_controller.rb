@@ -1,9 +1,4 @@
 class PhotosController < ApplicationController
-    def create
-        photo = Photo.create(photo_params)
-        render json: photo
-    end
-
     def index
         photos = Photo.all
         render json: photos
@@ -13,16 +8,29 @@ class PhotosController < ApplicationController
         photo =Photo.find(params[:id])
         render json: photo
     end
-
+    
     def edit
         photo = Photo.find(params[:id])
         render json: photo
     end
+    
+    def create
+        photo = Photo.create(photo_params)
+        if photo.valid?
+            render json: photo
+        else
+            render json: photo.errors, status: 422
+        end
+    end  
 
     def update
         photo = Photo.find(params[:id])
         photo.update(photo_params)
-        render json: photo
+        if photo.valid?
+            render json: photo
+        else
+            render json: photo.errors, status: 422
+        end
     end
 
     def destroy

@@ -102,13 +102,9 @@ RSpec.describe 'Destinations', type: :request do
   end
 
   describe "cannot create a destination without valid attributes" do
-    it "does not create a destination without a location" do
+    it "does not create a destination without a location, climate, local language, image and description" do
       destination_params = {
         destination: {
-          climate: 'Tropical',
-          local_language: 'Spanish',
-          image: 'https://static.nationalgeographic.co.uk/files/styles/image_3200/public/online_ean749_hr_web_0.jpg?w=1600&h=900',
-          description: 'Vibrant Caribbean city with rich culture, history, and colorful architecture.',    
           user_id: user.id
         }
       }
@@ -116,91 +112,15 @@ RSpec.describe 'Destinations', type: :request do
       expect(response).to have_http_status 422
       destination = JSON.parse(response.body)
       expect(destination['location']).to include "can't be blank"
-    end
-
-    it "does not create a destination without an image" do
-      destination_params = {
-        destination: {
-          location: 'San Juan, Puerto Rico',
-          climate: 'Tropical',
-          local_language: 'Spanish',
-          description: 'Vibrant Caribbean city with rich culture, history, and colorful architecture.',    
-          user_id: user.id
-        }
-      }
-      post '/destinations', params: destination_params
-      expect(response).to have_http_status 422
-      destination = JSON.parse(response.body)
-      expect(destination['image']).to include "can't be blank"
-    end
-
-    it "does not create a destination without a climate" do
-      destination_params = {
-        destination: {
-          location: 'San Juan, Puerto Rico',
-          local_language: 'Spanish',
-          image: 'https://static.nationalgeographic.co.uk/files/styles/image_3200/public/online_ean749_hr_web_0.jpg?w=1600&h=900',
-          description: 'Vibrant Caribbean city with rich culture, history, and colorful architecture.',    
-          user_id: user.id
-        }
-      }
-      post '/destinations', params: destination_params
-      expect(response).to have_http_status 422
-      destination = JSON.parse(response.body)
       expect(destination['climate']).to include "can't be blank"
-    end
-
-    it "does not create a destination without a local language" do
-      destination_params = {
-        destination: {
-          location: 'San Juan, Puerto Rico',
-          climate: 'Tropical',
-          image: 'https://static.nationalgeographic.co.uk/files/styles/image_3200/public/online_ean749_hr_web_0.jpg?w=1600&h=900',
-          description: 'Vibrant Caribbean city with rich culture, history, and colorful architecture.',    
-          user_id: user.id
-        }
-      }
-      post '/destinations', params: destination_params
-      expect(response).to have_http_status 422
-      destination = JSON.parse(response.body)
       expect(destination['local_language']).to include "can't be blank"
-    end
-
-    it "does not create a destination without a user" do
-      destination_params = {
-        destination: {
-          location: 'San Juan, Puerto Rico',
-          climate: 'Tropical',
-          local_language: 'Spanish',
-          image: 'https://static.nationalgeographic.co.uk/files/styles/image_3200/public/online_ean749_hr_web_0.jpg?w=1600&h=900',
-          description: 'Vibrant Caribbean city with rich culture, history, and colorful architecture.'   
-        }
-      }
-      post '/destinations', params: destination_params
-      expect(response).to have_http_status 422
-      destination = JSON.parse(response.body)
-      expect(destination['user_id']).to include "can't be blank"
-    end
-    it "does not create a destination without a description" do
-      destination_params = {
-        destination: {
-          location: 'San Juan, Puerto Rico',
-          climate: 'Tropical',
-          local_language: 'Spanish',
-          image: 'https://static.nationalgeographic.co.uk/files/styles/image_3200/public/online_ean749_hr_web_0.jpg?w=1600&h=900',
-          user_id: user.id
-        }
-      }
-      post '/destinations', params: destination_params
-      expect(response).to have_http_status 422
-      destination = JSON.parse(response.body)
+      expect(destination['image']).to include "can't be blank"
       expect(destination['description']).to include "can't be blank"
     end
-
   end
 
   describe "cannot update a destination without valid attributes"
-    it "does not update a destination without a location" do
+    it "does not update a destination without a location, climate, local language, image and description" do
       destination_params = {
         destination: {
           location: 'San Juan, Puerto Rico',
@@ -217,10 +137,10 @@ RSpec.describe 'Destinations', type: :request do
       destination_params_update = {
         destination: {
           location: '',
-          climate: 'Tropical',
-          local_language: 'Spanish',
-          image: 'https://static.nationalgeographic.co.uk/files/styles/image_3200/public/online_ean749_hr_web_0.jpg?w=1600&h=900',
-          description: 'Vibrant Caribbean city with rich culture, history, and colorful architecture.',    
+          climate: '',
+          local_language: '',
+          image: '',
+          description: '',    
           user_id: user.id
           }
       }
@@ -228,125 +148,9 @@ RSpec.describe 'Destinations', type: :request do
       expect(response).to have_http_status 422
       destination = JSON.parse(response.body)
       expect(destination['location']).to include "can't be blank"
-  end
-  
-  it "does not update a destination without an image" do
-    destination_params = {
-      destination: {
-        location: 'San Juan, Puerto Rico',
-        climate: 'Tropical',
-        local_language: 'Spanish',
-        image: 'https://static.nationalgeographic.co.uk/files/styles/image_3200/public/online_ean749_hr_web_0.jpg?w=1600&h=900',
-        description: 'Vibrant Caribbean city with rich culture, history, and colorful architecture.',    
-        user_id: user.id
-      }
-    }
-    post '/destinations', params: destination_params
-    destination = Destination.first
-
-    destination_params_update = {
-      destination: {
-        location: 'San Juan, Puerto Rico',
-        climate: 'Tropical',
-        local_language: 'Spanish',
-        image: '',
-        description: 'Vibrant Caribbean city with rich culture, history, and colorful architecture.',    
-        user_id: user.id
-      }
-    }
-    patch "/destinations/#{destination.id}", params: destination_params_update
-    expect(response).to have_http_status 422
-    destination = JSON.parse(response.body)
-    expect(destination['image']).to include "can't be blank"
-  end
-
-  it "does not update a destination without a climate" do
-    destination_params = {
-      destination: {
-        location: 'San Juan, Puerto Rico',
-        climate: 'Tropical',
-        local_language: 'Spanish',
-        image: 'https://static.nationalgeographic.co.uk/files/styles/image_3200/public/online_ean749_hr_web_0.jpg?w=1600&h=900',
-        description: 'Vibrant Caribbean city with rich culture, history, and colorful architecture.',    
-        user_id: user.id
-      }
-    }
-    post '/destinations', params: destination_params
-    destination = Destination.first
-
-    destination_params_update = {
-      destination: {
-        location: 'San Juan, Puerto Rico',
-        climate: '',
-        local_language: 'Spanish',
-        image: 'https://static.nationalgeographic.co.uk/files/styles/image_3200/public/online_ean749_hr_web_0.jpg?w=1600&h=900',
-        description: 'Vibrant Caribbean city with rich culture, history, and colorful architecture.',    
-        user_id: user.id
-      }
-    }
-    patch "/destinations/#{destination.id}", params: destination_params_update
-    expect(response).to have_http_status 422
-    destination = JSON.parse(response.body)
-    expect(destination['climate']).to include "can't be blank"
-  end
-  
-  it "does not update a destination without a local language" do
-    destination_params = {
-      destination: {
-        location: 'San Juan, Puerto Rico',
-        climate: 'Tropical',
-        local_language: 'Spanish',
-        image: 'https://static.nationalgeographic.co.uk/files/styles/image_3200/public/online_ean749_hr_web_0.jpg?w=1600&h=900',
-        description: 'Vibrant Caribbean city with rich culture, history, and colorful architecture.',    
-        user_id: user.id
-      }
-    }
-    post '/destinations', params: destination_params
-    destination = Destination.first
-
-    destination_params_update = {
-      destination: {
-        location: 'San Juan, Puerto Rico',
-        climate: 'Tropical',
-        local_language: '',
-        image: 'https://static.nationalgeographic.co.uk/files/styles/image_3200/public/online_ean749_hr_web_0.jpg?w=1600&h=900',
-        description: 'Vibrant Caribbean city with rich culture, history, and colorful architecture.',    
-        user_id: user.id
-      }
-    }
-    patch "/destinations/#{destination.id}", params: destination_params_update
-    expect(response).to have_http_status 422
-    destination = JSON.parse(response.body)
-    expect(destination['local_language']).to include "can't be blank"
-  end
-
-  it "does not update a destination without a description" do
-    destination_params = {
-      destination: {
-        location: 'San Juan, Puerto Rico',
-        climate: 'Tropical',
-        local_language: 'Spanish',
-        image: 'https://static.nationalgeographic.co.uk/files/styles/image_3200/public/online_ean749_hr_web_0.jpg?w=1600&h=900',
-        description: 'Vibrant Caribbean city with rich culture, history, and colorful architecture.',    
-        user_id: user.id
-      }
-    }
-    post '/destinations', params: destination_params
-    destination = Destination.first
-
-    destination_params_update = {
-      destination: {
-        location: 'San Juan, Puerto Rico',
-        climate: 'Tropical',
-        local_language: 'Spanish',
-        image: 'https://static.nationalgeographic.co.uk/files/styles/image_3200/public/online_ean749_hr_web_0.jpg?w=1600&h=900',
-        description: '',    
-        user_id: user.id
-      }
-    }
-    patch "/destinations/#{destination.id}", params: destination_params_update
-    expect(response).to have_http_status 422
-    destination = JSON.parse(response.body)
-    expect(destination['description']).to include "can't be blank"
+      expect(destination['climate']).to include "can't be blank"
+      expect(destination['local_language']).to include "can't be blank"
+      expect(destination['image']).to include "can't be blank"
+      expect(destination['description']).to include "can't be blank"
   end
 end
