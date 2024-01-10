@@ -33,6 +33,19 @@ user1_destinations.each do |destination|
 end
 
 user2_destinations.each do |destination|
-    user2.destinations.create destination
-    puts "creating destination #{destination}"
+  user2.destinations.create destination
+  puts "creating destination #{destination}"
+end
+
+user1_photos = [
+  {
+    destination_id: user1.destinations.first.id,
+    image: 'https://static.nationalgeographic.co.uk/files/styles/image_3200/public/online_ean749_hr_web_0.jpg?w=1600&h=900',
+    description: 'testing'
+  }
+]
+
+user1_photos.each do |photo|
+  user1.destinations.first.photos.create photo
+  puts "creating photo #{photo}"
 end

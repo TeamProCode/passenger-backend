@@ -1,9 +1,4 @@
 class DestinationsController < ApplicationController
-    def index
-        destinations = Destination.all
-        render json: destinations
-    end
-
     def create
         destination = Destination.create(destination_params)
         if destination.valid?
@@ -13,6 +8,11 @@ class DestinationsController < ApplicationController
         end
     end
     
+    def index
+        destinations = Destination.all
+        render json: destinations
+    end
+
     def show
         destination = Destination.find(params[:id])
         render json: destination
