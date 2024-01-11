@@ -4,6 +4,7 @@ class User < ApplicationRecord
   devise :database_authenticatable, :registerable,
          :jwt_authenticatable, jwt_revocation_strategy: JwtDenylist 
   has_many :destinations
+  has_many :photos, through: :destinations
   validates :email, presence: true
   validates :email, uniqueness: true
   # validates the presence of password when id is nil aka the account is new and does not have an id yet

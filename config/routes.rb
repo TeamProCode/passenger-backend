@@ -1,4 +1,5 @@
 Rails.application.routes.draw do
+  resources :photos
   resources :destinations
   devise_for :users,
     path: '',

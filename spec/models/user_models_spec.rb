@@ -17,7 +17,7 @@ RSpec.describe User, type: :model do
         expect(user.errors[:password]).to_not be_empty
     end
 
-    it "should not create a user without a valid password" do
+    it "should not create a user without a password of at least 8 characters" do
         user = User.create(
             email: 'test@example.com',
             password: 'pass',
